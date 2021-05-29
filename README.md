@@ -1,6 +1,6 @@
 # Gexplorer
 
-OSINT tool allowing the exploration of a user's public data from a Google email address (gmail, googlemail...)
+OSINT tool allowing the exploration of a user's public data from a Google email address (gmail, googlemail) to find YouTube account, Google Maps Contributions informations and more.
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4a1.png" alt="bulb" style="zoom:33%;" /> What's the script doing
 
