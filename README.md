@@ -29,7 +29,7 @@ This script does :
 ### Download files and dependencies
 
 ```bash
-git clone https://github.com/WildSiphon/Gexplorer.git
+git clone https://github.com/WildSiphon/Mailfogle.git
 cd Gexplorer
 pip3 install -r requirements.txt
 ```
