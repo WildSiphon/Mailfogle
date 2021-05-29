@@ -7,7 +7,7 @@ OSINT tool allowing the exploration of a user's public data from a Google email 
 The script will :
 - **connect** to the `People API` via a Google account
 - **add the emails** to dig to the account's contacts list
-- **download the contact list** to get the all the ***Google ID*** that Google will give
+- **download the contact list** to get all the ***Google ID***
 - **find stuff** using the ***Google ID***
 - **search for a YouTube account** corresponding to the *username* of the email address
 - **delete the email address** of the account's contacts list
@@ -99,7 +99,7 @@ This case is a list of informations about each video of the channel.
 | updated     | Video last updated date (*string*)                           |
 | views       | Number of views (*int*)                                      |
 | thumbUp     | Number of thumbs up (*int*)                                  |
-| stars       | Number of stars (from 1 to 5 calculated according to the ratio of thumbs up and inches down) (*float*)<br>*Not specified if the number of thumbs up is 0* |
+| stars       | Number of stars (from 1 to 5 calculated according to the ratio of thumbs up and thumb down) (*float*)<br>*Not specified if the number of thumbs up is 0* |
 
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png" alt="memo" style="zoom:33%;" /> Stuff to add
