@@ -30,7 +30,7 @@ This script does :
 
 ```bash
 git clone https://github.com/WildSiphon/Mailfogle.git
-cd Gexplorer
+cd Mailfogle
 pip3 install -r requirements.txt
 ```
 
