@@ -1,4 +1,4 @@
-# Gexplorer
+# Mailfogle
 
 OSINT tool allowing the exploration of a user's public data from a Google email address (gmail, googlemail) to find YouTube account, Google Maps Contributions informations and more.
 
