@@ -1,7 +1,7 @@
 # Gexplorer
 OSINT tool allowing the exploration of a user's public data from a Google email address
 
-## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4a1.png" alt="bulb" style="zoom:33%;" /> What's the script doing
+## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4a1.png" alt="bulb" style="zoom:10%;" /> What's the script doing
 
 The script will :
 - **connect** to the `People API` via a Google account
@@ -11,7 +11,7 @@ The script will :
 - **search for a YouTube account** corresponding to the *username* of the email address
 - **delete the email address** of the account's contacts list
 
-## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e0.png" alt="hammer_and_wrench" style="zoom:33%;" /> Installation
+## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e0.png" alt="hammer_and_wrench" style="zoom:10%;" /> Installation
 
 ### Download files and dependencies
 
@@ -27,7 +27,7 @@ Create a new project on https://console.cloud.google.com/ and add `People API` t
 
 Generate `ID clients OAuth 2.0` and download them. Rename the file `credentials.json` and place it in the same folder. 
 
-## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4c8.png" alt="chart_with_upwards_trend" style="zoom:33%;" />Use
+## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4c8.png" alt="chart_with_upwards_trend" style="zoom:10%;" />Use
 
 ### Usual use
 
@@ -57,7 +57,7 @@ You can still manage contacts manually [here](https://contacts.google.com/).
 
 If you can't connect to `Google People API`, you can still run the script. It will only try to find YouTube accounts matching the *username* in the mail address.
 
-## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4da.png" alt="books" style="zoom:33%;" />Output
+## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4da.png" alt="books" style="zoom:10%;" />Output
 
 The results are displayed in console, but more information are recorded and stored in `./output.json`.
 
