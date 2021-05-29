@@ -12,7 +12,7 @@ The script will :
 - **search for a YouTube account** corresponding to the *username* of the email address
 - **delete the email address** of the account's contacts list
 
-<img src="/home/siphon/Dropbox/Informatique/OSINT/Tools/Gexplorer/demo/demo.gif" alt="demo" style="zoom:75%;" />
+<img src="./demo/demo.gif" alt="demo" style="zoom:75%;" />
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e0.png" alt="hammer_and_wrench" style="zoom:33%;" /> Installation
 
