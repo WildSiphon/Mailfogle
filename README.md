@@ -52,7 +52,7 @@ larry.page@gmail.com
 Then run the script.
 
 ```bash
-python3 gexplorer.py
+python3 mailfogle.py
 ```
 
 <img src="./demo/demo.gif" alt="demo" style="zoom:75%;" />
