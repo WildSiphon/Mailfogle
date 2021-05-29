@@ -1,3 +1,2 @@
 test@gmail.com
-toto@gmail.com
-tutu@gmail.com
+larry.page@gmail.com
