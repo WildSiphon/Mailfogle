@@ -11,6 +11,8 @@ To access all the features :
 + **Google account**
 + **Google People API** 
 
+If you can't connect to `Google People API`, you can still run the script. It will only try to find **YouTube accounts** matching the *username* in the mail address.
+
 ### Operation
 
 This script does :
@@ -45,7 +47,7 @@ Generate `ID clients OAuth 2.0` and download them. Rename the file `credentials.
 Write the addresses to explore in the `emails.txt` file.
 
 ```
-test@gmail.com
+google@gmail.com
 larry.page@gmail.com
 ```
 
@@ -64,10 +66,6 @@ The first time you will use it, you will be asked to log into a Google account. 
 We advise you not to log into a personal account but to use an account reserved for OSINT. The script does not retrieve any of your personal information, but if it crashes for some reason, contacts added during its execution will not be deleted. 
 
 You can still manage contacts manually [here](https://contacts.google.com/).
-
-### Use without People API's credentials
-
-If you can't connect to `Google People API`, you can still run the script. It will only try to find **YouTube accounts** matching the *username* in the mail address.
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4da.png" alt="books" style="zoom:33%;" />Output
 
