@@ -1,4 +1,5 @@
 # Gexplorer
+
 OSINT tool allowing the exploration of a user's public data from a Google email address
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4a1.png" alt="bulb" style="zoom:33%;" /> What's the script doing
@@ -10,6 +11,8 @@ The script will :
 - **find stuff** using the ***Google ID***
 - **search for a YouTube account** corresponding to the *username* of the email address
 - **delete the email address** of the account's contacts list
+
+<img src="/home/siphon/Dropbox/Informatique/OSINT/Tools/Gexplorer/demo/demo.gif" alt="demo" style="zoom:75%;" />
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e0.png" alt="hammer_and_wrench" style="zoom:33%;" /> Installation
 
