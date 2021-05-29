@@ -2,17 +2,25 @@
 
 OSINT tool allowing the exploration of a user's public data from a Google email address (gmail, googlemail) to find YouTube account, Google Maps Contributions informations and more.
 
-## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4a1.png" alt="bulb" style="zoom:33%;" /> What's the script doing
+## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4a1.png" alt="bulb" style="zoom:33%;" /> The script
 
-The script will :
-- **connect** to the `People API` via a Google account
-- **add the emails** to dig to the account's contacts list
+### Needs
+
+To access all the features :
+
++ **Google account**
++ **Google People API** 
+
+### Operation
+
+This script does :
+
+- **connect** to `People API` via your Google account
+- **add the emails** to dig to your account's contact list
 - **download the contact list** to get all the ***Google ID***
-- **find stuff** using the ***Google ID***
+- **find stuff** using the ***Google ID*** given by Google
 - **search for a YouTube account** corresponding to the *username* of the email address
-- **delete the email address** of the account's contacts list
-
-<img src="./demo/demo.gif" alt="demo" style="zoom:75%;" />
+- **delete the email address** of your account's contact list at the end
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e0.png" alt="hammer_and_wrench" style="zoom:33%;" /> Installation
 
@@ -38,8 +46,7 @@ Write the addresses to explore in the `emails.txt` file.
 
 ```
 test@gmail.com
-toto@gmail.com
-tutu@gmail.com
+larry.page@gmail.com
 ```
 
 Then run the script.
@@ -47,6 +54,8 @@ Then run the script.
 ```bash
 python3 gexplorer.py
 ```
+
+<img src="./demo/demo.gif" alt="demo" style="zoom:75%;" />
 
 ### First use
 
@@ -58,7 +67,7 @@ You can still manage contacts manually [here](https://contacts.google.com/).
 
 ### Use without People API's credentials
 
-If you can't connect to `Google People API`, you can still run the script. It will only try to find YouTube accounts matching the *username* in the mail address.
+If you can't connect to `Google People API`, you can still run the script. It will only try to find **YouTube accounts** matching the *username* in the mail address.
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4da.png" alt="books" style="zoom:33%;" />Output
 
@@ -81,14 +90,14 @@ The results are displayed in console, but more information are recorded and stor
 
 | Key      | Value                                           |
 | -------- | ----------------------------------------------- |
-| channel  | Youtube account name (*string*)                 |
+| channel  | YouTube account name (*string*)                 |
 | url      | Link to the channel (*string*)                  |
-| creation | Creation date of the Youtube account (*string*) |
+| creation | Creation date of the YouTube account (*string*) |
 | videos   | See after (*list of dict*)                      |
 
 #### Videos
 
-This case is a list of informations about each video of the channel.
+List of informations about each video of the channel.
 | Key         | Value                                                        |
 | ----------- | ------------------------------------------------------------ |
 | title       | Video title (*string*)                                       |
@@ -99,7 +108,7 @@ This case is a list of informations about each video of the channel.
 | updated     | Video last updated date (*string*)                           |
 | views       | Number of views (*int*)                                      |
 | thumbUp     | Number of thumbs up (*int*)                                  |
-| stars       | Number of stars (from 1 to 5 calculated according to the ratio of thumbs up and thumb down) (*float*)<br>*Not specified if the number of thumbs up is 0* |
+| stars       | Number of stars (from 1 to 5 calculated according to the ratio of thumbs up and thumb down) (*float*)<br>*Not specified if the number of thumbUp is 0* |
 
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png" alt="memo" style="zoom:33%;" /> Stuff to add
