@@ -1,15 +1,14 @@
-from __future__ import print_function
-import os.path,requests,json
+import os.path,json
 from time import sleep
-from bs4 import BeautifulSoup
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
-
-SCOPES = ['https://www.googleapis.com/auth/contacts']
+from lib.maps import mapsData
+from lib.youtube import youtubeData
 
 def connect():
+	SCOPES = ['https://www.googleapis.com/auth/contacts']
 	creds = None
 
 	if os.path.exists('token.json'):
@@ -39,57 +38,54 @@ def importMails(apiFlag):
 		if apiFlag:
 			importContact(mails[i])
 	return mails
-		
-def ytData(username):
-	print('\tYouTube : User \'' + username + '\'',end=' ')
-	yt = requests.get('https://www.youtube.com/feeds/videos.xml?user=' + username)
-	if yt.status_code == 404:
-		print('not found')
-		return None
-	elif yt.status_code == 200:
-		print('found!')
-		ytDataRaw = BeautifulSoup(yt.text, 'html.parser')
-		ytDatas = {}
-		ytDatas['channel'] = ytDataRaw.title.string
-		ytDatas['url'] = ytDataRaw.title.find_next_sibling('link').get('href')
-		ytDatas['creation'] = ytDataRaw.published.string
-		videos = []
-		for vid in ytDataRaw.find_all('entry'):
-			video = {}
-			video['title'] = vid.find('title').string
-			video['link'] = vid.find('link').get('href')
-			video['thumbnail'] = vid.find('media:group').find('media:thumbnail').get('url')
-			video['description'] = vid.find('media:group').find('media:description').string
-			video['published'] = vid.find('published').string
-			video['updated'] = vid.find('updated').string
-			video['views'] = int(vid.find('media:group').find('media:community').find('media:statistics').get('views'))
-			video['thumbUp'] = int(vid.find('media:group').find('media:community').find('media:starrating').get('count'))
-			if video['thumbUp'] != '0':
-				video['stars'] = float(vid.find('media:group').find('media:community').find('media:starrating').get('average'))
-			videos.append(video)
-		ytDatas['videos'] = videos
 
-		views = 0
-		for video in ytDatas['videos']:
-			views += video['views']
-		print('\t\tChannel \'' + ytDatas['channel'] + '\' created ' + ytDatas['creation'][:len(ytDatas['creation'])-6].replace('T',' '))
-		print('\t\t' + ytDatas['url'])
-		print('\t\t' + str(views) + ' cumulative views on ' + str(len(ytDatas['videos'])) + ' posted video(s) found')
-		return ytDatas
-	else:
-		print('\n\t\tUnknown error occurred during data processing')
-		return -1		
+def printInformations(datas):
+
+	print(f"\n{datas['mail']} : {'NOT A GOOGLE USER' if 'userTypes' not in datas else ', '.join([ut.replace('_',' ') for ut in datas['userTypes']])}\n")
+
+	if 'userTypes' in datas:
+
+		if 'name' in datas: print(f"\tName : {datas['name']}")
+		print(f"\tGoogle ID : {datas['googleID']}\n\tProfile picture : {datas['profilePic']}")
+
+		if 'maps' in datas:
+			print(f"\n\tMaps Contributions & Reviews ({datas['maps']['url']})")
+
+			if 'localGuide' in datas['maps']:
+				print(f"\t\tLocal Guide level {datas['maps']['localGuide']['level']} with {datas['maps']['localGuide']['points']} points")
+
+			if isinstance(datas['maps']['contributions'],dict):
+				nbContrib = sum(datas['maps']['contributions'][what] for what in datas['maps']['contributions'])
+				print(f"\t\t{nbContrib} contributions including "
+						+ f"{datas['maps']['contributions']['reviews']+datas['maps']['contributions']['ratings']} reviews & ratings and "
+						+ f"{datas['maps']['contributions']['photos']+datas['maps']['contributions']['videos']} medias")
+				count = 0
+				if datas['maps']['contributions']['photos'] or datas['maps']['contributions']['videos']:
+					count = sum(len(c['medias']) for c in datas['maps']['medias']['content'])
+				print(f"\t\t\t" + ' '*len(str(nbContrib)) + f"scrapped in fact {len(datas['maps']['reviews']) if 'reviews' in datas['maps'] else 0} reviews & ratings and {count} medias")
+			else:
+				print(f"\t\t{datas['maps']['contributions']} contributions /!\\ This data is sometimes wrong. Configure Selenium to scrap more accurate informations /!\\")
+		else:
+			print('\n\tGoogle maps profile is private, can\'t scrap informations from it')
+
+	if 'youtube' in datas:
+		print(f"\n\tYouTube : User \'{datas['youtube']['username']}\' found /!\\ Maybe not the one you're looking for /!\\")
+		print(f"\t\tChannel \'{datas['youtube']['channel']}\' created {datas['youtube']['creation'][:len(datas['youtube']['creation'])-6].replace('T',' ')}")
+		print(f"\t\t{datas['youtube']['url']}")
+		print(f"\t\t{sum(video['views'] for video in datas['youtube']['videos'])} cumulative views on {len(datas['youtube']['videos'])} posted video(s) found")
 
 def main():
 
+	# Try to connect to the Google People API and return a flag if a connection is established
 	apiFlag = False
 	try:
 		connect()
 		apiFlag = True
-		print('Connected to Google people API')
+		print(f'Connected to Google people API')
 	except:
-		print('Cannot connect to Google people API')
+		print(f'Cannot connect to Google people API')
 
+	# Import contact from the 'emails.txt' file (+ to the contact's list of the account if API connected)
 	mails = importMails(apiFlag)
 
 	datas = []
@@ -104,22 +100,22 @@ def main():
 				data = {}
 				mail = person['emailAddresses'][0]['value']
 				if mail in mails:
-					print('\n' + mail + ' :',end=' ')
 					data['mail'] = mail
 					if len(person['metadata']['sources']) > 1:
 						data['userTypes'] = person['metadata']['sources'][1]['profileMetadata']['userTypes']
 						data['googleID'] = person['metadata']['sources'][1]['id']
 						data['profilePic'] = person['photos'][0]['url']
-						data['maps'] = 'https://www.google.com/maps/contrib/' + data['googleID']
-						print(data['userTypes'][0])
-						print('\tGoogle ID : ' + data['googleID'])
-						print('\tProfile picture : ' + data['profilePic'])
-						print('\tMaps Contributions & Reviews : ' + data['maps'])
-					else:
-						print('Not a Google user')
 
-					ytDatas = ytData(mail.split('@')[0])
-					data['youtube'] = ytDatas
+						mpDatas = mapsData('https://www.google.com/maps/contrib/' + data['googleID'])
+						if mpDatas:
+							data['maps'] = mpDatas
+							data['name'] = data['maps']['name']
+							data['maps'].pop('name')
+
+					ytDatas = youtubeData(mail.split('@')[0])
+					if ytDatas:	data['youtube'] = ytDatas
+
+					printInformations(data)
 
 					service.people().deleteContact(resourceName=person['resourceName']).execute()
 					mails.pop(mails.index(mail))
@@ -133,10 +129,10 @@ def main():
 	else:
 		for mail in mails:
 			print('\n' + mail + ' : ')
-			ytDatas = ytData(mail.split('@')[0])
+			ytDatas = youtubeData(mail.split('@')[0])
 			datas.append(ytDatas)
 
-	with open(('./output'),'w') as f:
+	with open(('./output.json'),'w') as f:
 		json.dump(datas,f)
 
 if __name__ == '__main__':
