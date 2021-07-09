@@ -1,3 +1,4 @@
 *.json
 emails.txt
 geckodriver.log
+lib/__pycache__/
