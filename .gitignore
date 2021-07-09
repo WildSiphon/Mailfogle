@@ -1,4 +1,3 @@
-credentials.json
+*.json
 emails.txt
 geckodriver.log
-token.json
