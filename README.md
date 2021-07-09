@@ -44,9 +44,35 @@ pip3 install -r requirements.txt
 
 ### Configure API
 
-Create a new project on https://console.cloud.google.com/ and add `People API` to it.
+Create a new project on https://console.cloud.google.com/ and add `People API` to it :
 
-Generate `ID clients OAuth 2.0` and download them. Rename the file `credentials.json` and place it in the same folder as the project. 
+> Click on `Select a project` then `NEW PROJECT`. Choose a name and create it 
+>
+>  <img src="assets/configureAPI/image-20210709103322107.png" alt="image-20210709103322107" style="zoom: 67%;" />
+>
+>  <img src="assets/configureAPI/image-20210709103420711.png" alt="image-20210709103420711" style="zoom: 67%;" />
+>
+>  <img src="assets/configureAPI/image-20210709103556282.png" alt="image-20210709103556282" style="zoom: 67%;" />
+>
+> Go to API Dashboard and click on `+ Enable APIS AND SERVICES`
+>
+>  <img src="assets/configureAPI/image-20210709103833952.png" alt="image-20210709103833952" style="zoom:67%;" />
+>
+> Search for `Google People API` and enable it
+>
+>  <img src="assets/configureAPI/image-20210709104011761.png" alt="image-20210709104011761" style="zoom:67%;" />
+>
+> In `CREDENTIALS` panel, click on `CONFIGURE CONSENT SCREEN` and fill the form
+>
+> <img src="assets/configureAPI/image-20210709104455277.png" alt="image-20210709104455277" style="zoom:67%;" /><img src="assets/configureAPI/image-20210709104613811.png" alt="image-20210709104613811"  /> 
+>
+> Go back to `CREDENTIALS` and in menu `+ CREATE CREDENTIALS` click `Create OAuth client ID` (choose `Web application`) 
+>
+>  <img src="assets/configureAPI/image-20210709104933036.png" alt="image-20210709104933036" style="zoom:67%;" />
+>
+> Now `ID clients OAuth 2.0` will be generated<img src="assets/configureAPI/image-20210709105208170.png" alt="image-20210709105208170" style="zoom:67%;" /> 
+>
+> Click on the download icon, rename the file `credentials.json` and place it in the same folder as the project
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4c8.png" alt="chart_with_upwards_trend" style="zoom:33%;" />Use
 
@@ -65,7 +91,7 @@ Then run the script.
 python3 mailfogle.py
 ```
 
-Demonstration using YouTube creator's names and the address (sadly none of them is related to a YouTube channel) :<img src="./demo/demo.gif" alt="demo" style="zoom:75%;" />
+Demonstration using YouTube creator's names and the address (sadly none of them is related to a YouTube channel) :<img src="./assets/demo/demo.gif" alt="demo" style="zoom:75%;" />
 
 ### First use
 
