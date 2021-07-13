@@ -137,7 +137,7 @@ Results are displayed in console, but all the informations are recorded and stor
 | profilePic | Link to the target's profile picture [*string*]              |
 | name       | [Optional] : Target's name if found while scrapping maps data [*string*] |
 | maps       | [Optional] : If target's Google Maps profile is public : See after [*dict*] |
-| youtube    | See after [*dict*]                                           |
+| youtube    | [Optional] : See after [*dict*]                                           |
 
 ### Maps case format
 
