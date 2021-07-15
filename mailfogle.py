@@ -1,48 +1,8 @@
-import os.path,json
+import json
 from time import sleep
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
 from lib.maps import mapsData
 from lib.youtube import youtubeData
-
-def connect():
-	SCOPES = ['https://www.googleapis.com/auth/contacts']
-	creds = None
-
-	# Check if 'token.json' exist or not
-	if os.path.exists('token.json'):
-		creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-	# If there are no (valid) credentials available, let the user log in
-	if not creds or not creds.valid:
-		if creds and creds.expired and creds.refresh_token:
-			creds.refresh(Request())
-		else:
-			flow = InstalledAppFlow.from_client_secrets_file(
-				'credentials.json', SCOPES)
-			creds = flow.run_local_server(port=0)
-		# Save the credentials for the next run
-		with open('token.json', 'w') as token:
-			token.write(creds.to_json())
-
-	# Create service
-	global service
-	service = build('people', 'v1', credentials=creds)
-
-def importContact(mail):
-	# Import the mail as a contact to the account
-	service.people().createContact(body={'emailAddresses': [{'value': mail}]}).execute()
-
-def importMails(apiFlag):
-	# get all the contacts written in 'emails.txt' file
-	mails = open('emails.txt', 'r').readlines()
-	for i in range(len(mails)):
-		mails[i] = mails[i].replace('\n','')
-		# If API is enabled, import them as contact
-		if apiFlag: importContact(mails[i])
-	# Return the list 
-	return mails
+import lib.googlePeopleAPI as gpa
 
 def printInformations(datas):
 	# Print if the account exist on Google
@@ -92,24 +52,21 @@ def main():
 	# Try to connect to the Google People API and return a flag if a connection is established
 	apiFlag = False
 	try:
-		connect()
+		gpa.connect()
 		apiFlag = True
 		print(f'Connected to Google people API')
 	except:
 		print(f'Cannot connect to Google people API')
 
 	# Import contact from the 'emails.txt' file (+ to the contact's list of the account if API connected)
-	mails = importMails(apiFlag)
+	mails = gpa.importMails(apiFlag)
 
 	datas = []
 	# If API is enabled
 	if apiFlag:
 		while True:
 			# Download all the contacts
-			results = service.people().connections().list(
-				resourceName='people/me',
-				personFields='names,photos,emailAddresses,metadata').execute()
-			connections = results.get('connections', [])
+			connections = gpa.downloadContacts()
 
 			# Iterate all the contacts downloaded
 			for person in connections:
@@ -141,7 +98,7 @@ def main():
 					printInformations(data)
 
 					# Delete the contact from list
-					service.people().deleteContact(resourceName=person['resourceName']).execute()
+					gpa.deleteContact(person['resourceName'])
 					mails.pop(mails.index(mail))
 
 					# Add the data found to big dict
