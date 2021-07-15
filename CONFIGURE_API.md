@@ -1,39 +1,84 @@
 # Configure API
 
-Create a new project on https://console.cloud.google.com/ and add `People API` to it :
+[TOC]
 
-+ Click on `Select a project` then `NEW PROJECT`. Choose a name and create it 
+## Platform
 
-<img src="./assets/configureAPI/image-20210709103322107.png" alt="image-20210709103322107"  />
+Go to to https://console.cloud.google.com/ and connect with a google account.
 
-<img src="./assets/configureAPI/image-20210709103420711.png" alt="image-20210709103420711"/>
+## Creation of a project
 
-<img src="./assets/configureAPI/image-20210709103556282.png" alt="image-20210709103556282"  />
++ Click on `Select a project` then `NEW PROJECT`
 
-+ Go to API Dashboard and click on `+ Enable APIS AND SERVICES`
+<img src="./assets/configureAPI/project-selectnew.png" alt="project-selectnew"  />
 
-<img src="./assets/configureAPI/image-20210709103833952.png" alt="image-20210709103833952"/>
++ Choose a name and create it
 
-+ Search for `Google People API` and enable it
+ <img src="./assets/configureAPI/project-create.png" alt="project-create"/>
 
-<img src="./assets/configureAPI/image-20210709104011761.png" alt="image-20210709104011761"/>
++ You should see a notification which says that the project has been correctly created
 
-+ In `CREDENTIALS` panel, click on `CONFIGURE CONSENT SCREEN` and fill the form
+ <img src="./assets/configureAPI/project-creatednotification.png" alt="project-creatednotification"/>
 
-  <img src="./assets/configureAPI/image-20210709104455277.png" alt="image-20210709104455277"/>
+## Adding Google People API
 
-  <img src="./assets/configureAPI/image-20210709104613811.png" alt="image-20210709104613811" style="zoom:150%;" />
++ Go to API Dashboard
 
-+ Go back to `CREDENTIALS` and in menu `+ CREATE CREDENTIALS` click `Create OAuth client ID` (choose `Desktop App`) 
+ <img src="./assets/configureAPI/GPAPI-dashboard.png" alt="GPAPI-dashboard"/>
 
-<img src="./assets/configureAPI/image-20210709104933036.png" alt="image-20210709104933036"/>
++ Click on `+ Enable APIS AND SERVICES`
 
-+ Add yourself as a tester
+<img src="./assets/configureAPI/GPAPI-enableAPIandservices.png" alt="GPAPI-enableAPIandservices"/>
 
-![image-20210709122923857](./assets/configureAPI/image-20210709122923857.png)
++ Search for `Google People API`
 
-+ Now `ID clients OAuth 2.0` will be generated
+<img src="./assets/configureAPI/GPAPI-searchpeople.png" alt="GPAPI-searchpeople"/>
 
-  <img src="./assets/configureAPI/image-20210709105208170.png" alt="image-20210709105208170"/>
++ Click on the first result
 
-+ Click on the download icon, rename the file `credentials.json` and place it in the same folder as the project
+<img src="./assets/configureAPI/GPAPI-findpeople.png" alt="GPAPI-findpeople"/>
+
++ Enable `Google People API`
+
+ <img src="./assets/configureAPI/GPAPI-enablepeople.png" alt="GPAPI-enablepeople"/>
+
++ You should see a notification which says that the API has been correctly enabled
+
+<img src="./assets/configureAPI/GPAPI-enabledpeoplenotification.png" alt="GPAPI-enabledpeoplenotification"/>
+
+## Configuration of the API
+
+
++ Go back to API Dashboard and click on `OAuth consent screen`. You will be asked to choose a `User Type`. Select `External`
+
+ <img src="./assets/configureAPI/configuration-externaluse.png" alt="configuration-externaluse"/>
+
++ Fill the `OAuth consent screen` forms with your informations
+
+ <img src="./assets/configureAPI/configuration-registration1.png" alt="configuration-registration1"/>
+
+ <img src="./assets/configureAPI/configuration-registration2.png" alt="configuration-registration2"/>
+
++ Pass the `Scopes` forms
+
+ <img src="./assets/configureAPI/configuration-registrationscopes.png" alt="configuration-registrationscopes"/>
+
++ Add a test user
+
+<img src="./assets/configureAPI/configuration-registrationtestuser.png" alt="configuration-registrationtestuser"/>
+
++ Click `Back to dashboard` on `Summary` panel
+
+## Getting credentials
+
++ In the `CREDENTIALS` panel, in menu `CREATE CREDENTIALS` select  `Create OAuth client ID` 
+
+<img src="./assets/configureAPI/credentials-create.png" alt="credentials-create"/>
+
++ Configure `OAuth` for `Desktop app` then create it
+
+ <img src="./assets/configureAPI/credentials-oauth.png" alt="credentials-oauth"/>
+
++ Click on `DOWNLOAD JSON`, rename the file `credentials.json` and place it in the same folder as the project
+
+<img src="./assets/configureAPI/credentials-oauthdl.png" alt="credentials-oauthdl"/>
