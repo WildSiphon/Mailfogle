@@ -1,7 +1,5 @@
 # Configure API
 
-[TOC]
-
 ## Platform
 
 Go to to https://console.cloud.google.com/ and connect with a google account.
