@@ -59,7 +59,7 @@ def main():
 		print(f'Cannot connect to Google people API')
 
 	# Import contact from the 'emails.txt' file (+ to the contact's list of the account if API connected)
-	mails = gpa.importMails(apiFlag)
+	mails = gpa.importMails(apiFlag, True)
 
 	datas = []
 	# If API is enabled
@@ -67,7 +67,8 @@ def main():
 		while True:
 			# Download all the contacts
 			connections = gpa.downloadContacts()
-
+			connections = list(filter(lambda contact : "emailAddresses" in contact.keys() and contact['emailAddresses'][0]['value'] in mails, connections))
+			
 			# Iterate all the contacts downloaded
 			for person in connections:
 				data = {}
@@ -121,7 +122,7 @@ def main():
 
 	# Save all the informations in YouTube channel
 	with open(('./output.json'),'w') as f:
-		json.dump(datas,f)
+		json.dump(datas,f, indent=2)
 
 if __name__ == '__main__':
 	main()

@@ -13,7 +13,7 @@ def connect():
 		creds = Credentials.from_authorized_user_file('token.json', SCOPES)
 	# If there are no (valid) credentials available, let the user log in
 	if not creds or not creds.valid:
-		if creds and creds.expired and creds.refresh_token:
+		if creds.expired and creds.refresh_token:
 			creds.refresh(Request())
 		else:
 			flow = InstalledAppFlow.from_client_secrets_file(
@@ -31,18 +31,20 @@ def importContact(mail):
 	# Import the mail as a contact to the account
 	service.people().createContact(body={'emailAddresses': [{'value': mail}]}).execute()
 
-def importMails(apiFlag):
+def importMails(apiFlag, addcontacts=False):
 	# get all the contacts written in 'emails.txt' file
 	mails = open('emails.txt', 'r').readlines()
-	for i in range(len(mails)):
-		mails[i] = mails[i].replace('\n','')
-		# If API is enabled, import them as contact
-		if apiFlag: importContact(mails[i])
+	mails = list(map(lambda m: m.replace('\n',''), mails))
+	# If API is enabled, import them as contact
+	if apiFlag and addcontacts:
+		for mail in mails:
+			importContact(mail)
 	# Return the list 
 	return mails
 
 def downloadContacts():
 	results = service.people().connections().list(
+				pageSize=1000,
 				resourceName='people/me',
 				personFields='names,photos,emailAddresses,metadata').execute()
 	return results.get('connections', [])
