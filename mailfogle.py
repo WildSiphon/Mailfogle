@@ -74,7 +74,7 @@ def main():
 				data = {}
 				# Get the current mail of contact
 				mail = person['emailAddresses'][0]['value']
-				# If the part of the one we're looking for, scrap informations
+				# If it's of one we're looking for, scrap informations
 				if mail in mails:
 					data['mail'] = mail
 					# If the contact is a GOOGLE USER
