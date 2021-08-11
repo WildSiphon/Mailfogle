@@ -54,16 +54,15 @@ optional arguments:
                         name of the output file (default is "output")
   -b BROWSER, --browser BROWSER
                         select browser "chrome" or "firefox" (default is "firefox")
-
 ```
 
-Then run the script.
+**Example**
 
 ```bash
-python3 mailfogle.py
+~$ python3 mailfogle.py -e  pierrecroce@gmail.com
 ```
 
-Demonstration using YouTube creator's names and the address (sadly none of them is related to a YouTube channel) :<img src="./assets/demo/demo.gif" alt="demo" style="zoom:75%;" />
+<img src="./assets/demo/demo.gif" alt="demo" style="zoom:75%;" />
 
 ### First use
 
@@ -75,7 +74,7 @@ You can still manage contacts manually [here](https://contacts.google.com/).
 
 ## <img src="https://github.githubassets.com/images/icons/emoji/unicode/1f4da.png" alt="books" style="zoom:33%;" />Output
 
-Results are displayed in console, but all the informations are recorded and stored in `./output.json`. This is much more than just what is printed on the terminal.
+Results are displayed in console, but all the informations are recorded and stored by default in `./output.json`. This is much more than just what is printed on the terminal.
 
 ### Example
 
@@ -135,7 +134,7 @@ Results are displayed in console, but all the informations are recorded and stor
 | profilePic | Link to the target's profile picture [*string*]              |
 | name       | [Optional] : Target's name if found while scrapping maps data [*string*] |
 | maps       | [Optional] : If target's Google Maps profile is public : See after [*dict*] |
-| youtube    | [Optional] : See after [*dict*]                                           |
+| youtube    | [Optional] : Last 15 videos, see after [*dict*]              |
 
 ### Maps case format
 
@@ -144,7 +143,7 @@ Results are displayed in console, but all the informations are recorded and stor
 | Key           | Value                                                        |
 | ------------- | ------------------------------------------------------------ |
 | url           | Link to the target's Google Maps & Contributions page [*string*] |
-| contributions | Number of "reviews", "ratings", "photos", "videos", "answers", "edits", "placesAdded", "roadsAdded", "factsChecked", "q&a" and "publishedLists" [*dict* of *int*]<br>If Selenium is not configured, it will only be a string |
+| contributions | Number of "reviews", "ratings", "photos", "videos", "answers", "edits", "placesAdded", "roadsAdded", "factsChecked", "q&a" and "publishedLists" [*dict* of *int*]<br>If Selenium is not working, it will only be a string |
 | localGuide    | [Optional] : If the target is a Local Guide, informations about "level" and "points" [*dict of int*] |
 | reviews       | [Optional] : If the target posted reviews : See after [*list of dict*] |
 | medias        | [Optional] : If the target posted medias : See after [*dict*] |
@@ -217,7 +216,7 @@ List of informations about each video of the channel.
 + Another way to find a person's Google ID without using the API (using the API is efficient but I'd rather not have to use it)
 + ~~Configure the script so that it can use Selenium with any geckodriver (not just Firefox)~~
 + Make a class "GooglePeopleAPI" instead of functions in googlePeopleAPI.py
-+ Find a way to scrap more than the alst 15 videos of a YouTube channel
++ Find a way to scrap more than the last 15 videos of a YouTube channel
 
 ## References
 
@@ -227,8 +226,3 @@ List of informations about each video of the channel.
 ## License
 
 [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.fr.html)
-
-
-
-
-

@@ -140,7 +140,6 @@ if __name__ == '__main__':
 	if args.email != None:
 		mails.append(args.email)
 	if args.file != None:
-		# get all the contacts written in 'emails.txt' file
 		mails.extend(open(args.file).read().splitlines())
 
 	if not mails:
