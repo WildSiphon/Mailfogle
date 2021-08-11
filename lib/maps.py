@@ -1,4 +1,4 @@
-from selenium import webdriver
+from lib.seleniumWrapper import Selenium
 from bs4 import BeautifulSoup
 from time import sleep
 import requests
@@ -21,7 +21,7 @@ def scrapMinInfos(html):
 				if len(name) != 1: mapsDataMin['name'] = name[1]
 				# Anonymous account
 				else: return {}
-			# 'Contributions' (could not be accurate) or 'LocalGuide'
+			# 'Contributions' (May not be accurate) or 'LocalGuide'
 			if prop['property'] == 'og:description':
 				mapsDataMin['contributions'] = prop['content'].lower()
 
@@ -261,13 +261,12 @@ def mapsData(url):
 	
 	if mpDatas:
 		
-		mpDatas['url'] = url
-		
 		try:
-			browser = webdriver.Firefox()
-			mpDatas.update(seleniumMaps(url,browser))
-			browser.quit()
+			mpDatas['url'] = url
+			selenium = Selenium("firefox")
+			mpDatas.update(seleniumMaps(url,selenium.driver))
+			selenium.driver.quit()
 		except Exception as e:
-			print(f'\n~~ Scrapping datas with Selenium doesn\'t work ~~\n{e}\n~~ Scrapping datas with Selenium doesn\'t work ~~')
+			print(e)
 
 	return mpDatas
