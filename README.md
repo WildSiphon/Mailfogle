@@ -10,9 +10,7 @@ To access all the features (you can still use the script without) :
 
 + **Google account**
 + **Google People API**
-+ **Selenium**
 
-If `Selenium` is not configured, it will scrap only the *name* and the *number of contributions* from **Google Maps** public profile.
 If you can't connect to `Google People API`, it will only try to find **YouTube accounts** matching the *username* in the mail address.
 
 ### Operation
@@ -35,12 +33,6 @@ git clone https://github.com/WildSiphon/Mailfogle.git
 cd Mailfogle
 pip3 install -r requirements.txt
 ```
-
-### Configure Selenium
-
-*This script is configured to use Selenium with Firefox*
-
-**Download** the latest `GeckoDriver` from [here](https://github.com/mozilla/geckodriver/releases) and **extract** it in `/usr/bin` (or somewhere else but must be in the `PATH`).
 
 ### Configure API
 

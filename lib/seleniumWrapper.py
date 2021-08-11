@@ -13,7 +13,10 @@ class Selenium:
 		# Detect OS
 		if platform.startswith('linux'):	EXT = ""
 		elif platform.startswith('win32'):	EXT = ".exe"
-		else: raise Exception("The use of selenium is not supported for this OS. Only \"linux\" and \"win32\" are possible")
+		else:
+			error_msg = "The use of selenium is not supported for this OS. Only \"linux\" and \"win32\" are possible\n"
+			error_msg += "Scrapping only the name and the number of contributions from Google Maps public profile"
+			raise Exception(error_msg)
 
 		# Choose the good driver
 		if (self.browser == "chrome"):
