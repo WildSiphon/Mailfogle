@@ -40,4 +40,9 @@ def downloadContacts():
 	return results.get('connections', [])
 
 def deleteContact(name):
-	service.people().deleteContact(resourceName=name).execute()
+	# Sometimes the google API has trouble deleting the contact
+	try:
+		service.people().deleteContact(resourceName=name).execute()
+	# Start again until it succeeds
+	except:
+		deleteContact(name)

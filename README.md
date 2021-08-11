@@ -6,10 +6,8 @@
 
 ### Needs
 
-To access all the features (you can still use the script without) :
-
-+ **Google account**
-+ **Google People API**
++ A dedicated **Google account**
++ Access to **Google People API**
 
 If you can't connect to `Google People API`, it will only try to find **YouTube accounts** matching the *username* in the mail address.
 
@@ -44,11 +42,19 @@ If you're not sure, see `CONFIGURE_API.md` which explains how to do it step by s
 
 ### Usual use
 
-Write the addresses to explore in the `emails.txt` file.
-
 ```
-google@gmail.com
-larry.page@gmail.com
+usage: mailfogle.py [-h] [-e EMAIL] [-f FILE] [-o OUTPUT] [-b BROWSER]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -e EMAIL, --email EMAIL
+                        target's mail
+  -f FILE, --file FILE  path to a file listing the email addresses of the targets
+  -o OUTPUT, --output OUTPUT
+                        name of the output file (default is "output")
+  -b BROWSER, --browser BROWSER
+                        select browser "chrome" or "firefox" (default is "firefox")
+
 ```
 
 Then run the script.
@@ -209,7 +215,9 @@ List of informations about each video of the channel.
 + A way to recover the name of the target if *Google Maps* profile is private
 + Add some infos to scrap from Google Maps profile (date of each media or medias from reviews)
 + Another way to find a person's Google ID without using the API (using the API is efficient but I'd rather not have to use it)
-+ Configure the script so that it can use Selenium with any geckodriver (not just Firefox)
++ ~~Configure the script so that it can use Selenium with any geckodriver (not just Firefox)~~
++ Make a class "GooglePeopleAPI" instead of functions in googlePeopleAPI.py
++ Find a way to scrap more than the alst 15 videos of a YouTube channel
 
 ## References
 

@@ -47,7 +47,7 @@ def printInformations(datas):
 		print(f"\tYouTube : User \'{datas['youtube']['username']}\' found /!\\ Maybe not the one you're looking for /!\\")
 		print(f"\t\tChannel \'{datas['youtube']['channel']}\' created {datas['youtube']['creation'][:len(datas['youtube']['creation'])-6].replace('T',' ')}")
 		print(f"\t\t{datas['youtube']['url']}")
-		print(f"\t\t{sum(video['views'] for video in datas['youtube']['videos'])} cumulative views on {len(datas['youtube']['videos'])} posted video(s) found")
+		print(f"\t\t{sum(video['views'] for video in datas['youtube']['videos'])} cumulative views on {len(datas['youtube']['videos'])} last posted video(s) found")
 
 def main(mails,output,browser):
 
@@ -130,7 +130,7 @@ if __name__ == '__main__':
 	
 	parser = argparse.ArgumentParser(description="OSINT tool allowing the exploration and the scrapping of a user's public data from a Google email address (gmail, googlemail) to find YouTube account, Google Maps Contributions and more.")
 	parser.add_argument('-e', '--email', help='target\'s mail')
-	parser.add_argument('-f', '--file', help='name of a file listing the email addresses of the targets')
+	parser.add_argument('-f', '--file', help='path to a file listing the email addresses of the targets')
 	parser.add_argument('-o', '--output', help='name of the output file (default is \"output\")', default="output")
 	parser.add_argument('-b', '--browser', help='select browser \"chrome\" or \"firefox\" (default is \"firefox\")', default="firefox")
 	args = parser.parse_args()
