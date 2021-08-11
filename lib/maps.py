@@ -255,7 +255,7 @@ def seleniumMaps(url,browser):
 	# Return datas
 	return mpDatas
 
-def mapsData(url):
+def mapsData(url,browser):
 
 	mpDatas = requestMaps(url)
 	
@@ -263,7 +263,7 @@ def mapsData(url):
 		
 		try:
 			mpDatas['url'] = url
-			selenium = Selenium("firefox")
+			selenium = Selenium(browser)
 			mpDatas.update(seleniumMaps(url,selenium.driver))
 			selenium.driver.quit()
 		except Exception as e:

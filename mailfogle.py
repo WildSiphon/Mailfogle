@@ -1,4 +1,6 @@
 import json
+import argparse
+from sys import exit
 from time import sleep
 from lib.maps import mapsData
 from lib.youtube import youtubeData
@@ -47,7 +49,7 @@ def printInformations(datas):
 		print(f"\t\t{datas['youtube']['url']}")
 		print(f"\t\t{sum(video['views'] for video in datas['youtube']['videos'])} cumulative views on {len(datas['youtube']['videos'])} posted video(s) found")
 
-def main():
+def main(mails,output,browser):
 
 	# Try to connect to the Google People API and return a flag if a connection is established
 	apiFlag = False
@@ -58,8 +60,8 @@ def main():
 	except:
 		print(f'Cannot connect to Google people API')
 
-	# Import contact from the 'emails.txt' file (+ to the contact's list of the account if API connected)
-	mails = gpa.importMails(apiFlag, True)
+	# Import mails to the account's contact list if API is connected
+	if apiFlag: gpa.importContacts(mails)
 
 	datas = []
 	# If API is enabled
@@ -84,7 +86,7 @@ def main():
 						data['profilePic'] = person['photos'][0]['url']
 
 						# Try to get maps infos
-						mpDatas = mapsData('https://www.google.com/maps/contrib/' + data['googleID'])
+						mpDatas = mapsData('https://www.google.com/maps/contrib/' + data['googleID'], browser)
 						if mpDatas: # If profile is public
 							data['maps'] = mpDatas
 							# Add te name found with maps to generals infos
@@ -121,8 +123,32 @@ def main():
 			datas.append(ytDatas)
 
 	# Save all the informations in YouTube channel
-	with open(('./output.json'),'w') as f:
+	with open((f'./{output}.json'),'w') as f:
 		json.dump(datas,f, indent=2)
 
 if __name__ == '__main__':
-	main()
+	
+	parser = argparse.ArgumentParser(description="OSINT tool allowing the exploration and the scrapping of a user's public data from a Google email address (gmail, googlemail) to find YouTube account, Google Maps Contributions and more.")
+	parser.add_argument('-e', '--email', help='target\'s mail')
+	parser.add_argument('-f', '--file', help='name of a file listing the email addresses of the targets')
+	parser.add_argument('-o', '--output', help='name of the output file (default is \"output\")', default="output")
+	parser.add_argument('-b', '--browser', help='select browser \"chrome\" or \"firefox\" (default is \"firefox\")', default="firefox")
+	args = parser.parse_args()
+
+	mails = []
+
+	if args.email != None:
+		mails.append(args.email)
+	if args.file != None:
+		# get all the contacts written in 'emails.txt' file
+		mails.extend(open(args.file).read().splitlines())
+
+	if not mails:
+		exit('Please specify target\'s mail\nmailfogle.py [-h] for more informations')
+
+	if args.browser.lower() not in ["firefox","chrome"]:
+		exit('Please choose a browser between \"Firefox\" and \"Chrome\"\nmailfogle.py [-h] for more informations')
+	else:
+		browser = args.browser.lower()
+
+	main(mails,args.output,browser)

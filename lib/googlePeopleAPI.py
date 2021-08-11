@@ -27,20 +27,10 @@ def connect():
 	global service
 	service = build('people', 'v1', credentials=creds)
 
-def importContact(mail):
-	# Import the mail as a contact to the account
-	service.people().createContact(body={'emailAddresses': [{'value': mail}]}).execute()
-
-def importMails(apiFlag, addcontacts=False):
-	# get all the contacts written in 'emails.txt' file
-	mails = open('emails.txt', 'r').readlines()
-	mails = list(map(lambda m: m.replace('\n',''), mails))
-	# If API is enabled, import them as contact
-	if apiFlag and addcontacts:
-		for mail in mails:
-			importContact(mail)
-	# Return the list 
-	return mails
+def importContacts(mails):
+	for mail in mails:
+		# Import the mail as a contact to the account
+		service.people().createContact(body={'emailAddresses': [{'value': mail}]}).execute()
 
 def downloadContacts():
 	results = service.people().connections().list(
