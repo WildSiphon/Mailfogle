@@ -43,17 +43,16 @@ If you're not sure, see `CONFIGURE_API.md` which explains how to do it step by s
 ### Usual use
 
 ```
-usage: mailfogle.py [-h] [-e EMAIL] [-f FILE] [-o OUTPUT] [-b BROWSER]
+usage: mailfogle.py [-h] [-e [EMAIL]] [-f [FILE]] [-o [OUTPUT]] [-b {firefox,chrome}]
+
+Explore and scrap user's public data from Google account
 
 optional arguments:
-  -h, --help            show this help message and exit
-  -e EMAIL, --email EMAIL
-                        target's mail
-  -f FILE, --file FILE  path to a file listing the email addresses of the targets
-  -o OUTPUT, --output OUTPUT
-                        name of the output file (default is "output")
-  -b BROWSER, --browser BROWSER
-                        select browser "chrome" or "firefox" (default is "firefox")
+  -h, --help           show this help message and exit
+  -e [EMAIL]           target's mail
+  -f [FILE]            path to a file listing the email addresses of the targets
+  -o [OUTPUT]          choose output name (default is "output")
+  -b {firefox,chrome}  select browser "chrome" or "firefox" (default is "firefox")
 ```
 
 **Example**
