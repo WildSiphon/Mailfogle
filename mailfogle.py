@@ -6,148 +6,232 @@ from lib.maps import mapsData
 from lib.youtube import youtubeData
 import lib.googlePeopleAPI as gpa
 
-def printInformations(datas):
-	# Print if the account exist on Google
-	print(f"\n{datas['mail']} : {'NOT A GOOGLE USER' if 'userTypes' not in datas else ', '.join([ut.replace('_',' ') for ut in datas['userTypes']])}\n")
+def printBanner():
+    for line in open("assets/banner.txt","r"):
+        print(line.replace("\n",""))
 
-	# If it exists
-	if 'userTypes' in datas:
-		# Print name found from google maps scrapping
-		if 'name' in datas: print(f"\tName : {datas['name']}")
-		# Print general infos
-		print(f"\tGoogle ID : {datas['googleID']}\n\tProfile picture : {datas['profilePic']}")
+def printInformations(datas: dict):
+    """Print the main informations."""
 
-		# If infos were scrapped from maps, print them
-		if 'maps' in datas:
-			print(f"\n\tMaps Contributions & Reviews ({datas['maps']['url']})")
+    user_type = (
+        ['NOT A GOOGLE USER'] if 'userTypes' not in datas
+        else [ut.replace('_',' ') for ut in datas['userTypes']]
+    )
+    print(f"\n{datas['mail']} : {', '.join(user_type)}\n")
 
-			if 'localGuide' in datas['maps']: # If the target is a Local guide
-				print(f"\t\tLocal Guide level {datas['maps']['localGuide']['level']} with {datas['maps']['localGuide']['points']} points")
+    # GOOGLE USER
+    if "userTypes" in datas:
+        if "name" in datas: print(f"\tName : {datas['name']}")
+        print(
+            f"\tGoogle ID : {datas['googleID']}" + 
+            f"\n\tProfile picture : {datas['profilePic']}"
+        )
 
-			# Print informations scrapped with selenium if it worked
-			if isinstance(datas['maps']['contributions'],dict):
-				# Count the total of contributions
-				nbContrib = sum(datas['maps']['contributions'][what] for what in datas['maps']['contributions'])
-				print(f"\t\t{nbContrib} contributions including "
-						+ f"{datas['maps']['contributions']['reviews']+datas['maps']['contributions']['ratings']} reviews & ratings and "
-						+ f"{datas['maps']['contributions']['photos']+datas['maps']['contributions']['videos']} medias")
-				# Count the number of contributions scrapped
-				count = 0
-				if datas['maps']['contributions']['photos'] or datas['maps']['contributions']['videos']:
-					count = sum(len(c['medias']) for c in datas['maps']['medias']['content'])
-				print(f"\t\t\t" + ' '*len(str(nbContrib)) + f"scrapped in fact {len(datas['maps']['reviews']) if 'reviews' in datas['maps'] else 0} reviews & ratings and {count} medias")
-			# print informations scrapped if selenium did not work
-			else:
-				print(f"\t\t{datas['maps']['contributions']} contributions /!\\ This data is sometimes wrong. Configure Selenium to scrap more accurate informations /!\\")
-		else:
-			print('\n\tGoogle maps profile is private, can\'t scrap informations from it')
+        # Maps profile not private
+        if "maps" in datas:
+            print(f"\n\tMaps Contributions & Reviews ({datas['maps']['url']})")
 
-	# If YouTube channel found, print informations scrapped
-	if 'youtube' in datas:
-		print(f"\tYouTube : User \'{datas['youtube']['username']}\' found /!\\ Maybe not the one you're looking for /!\\")
-		print(f"\t\tChannel \'{datas['youtube']['channel']}\' created {datas['youtube']['creation'][:len(datas['youtube']['creation'])-6].replace('T',' ')}")
-		print(f"\t\t{datas['youtube']['url']}")
-		print(f"\t\t{sum(video['views'] for video in datas['youtube']['videos'])} cumulative views on {len(datas['youtube']['videos'])} last posted video(s) found")
+            if "localGuide" in datas['maps']:
+                level  = datas['maps']['localGuide']['level']
+                points = datas['maps']['localGuide']['points']
+                print(f"\t\tLocal Guide level {level} with {points} points")
+
+            if isinstance(datas['maps']['contributions'],dict):
+                nbContrib = sum(
+                    datas['maps']['contributions'][what]
+                    for what in datas['maps']['contributions']
+                )
+                reviews_ratings = (
+                    datas['maps']['contributions']['reviews'] +
+                    datas['maps']['contributions']['ratings']
+                )
+                medias = (
+                    datas['maps']['contributions']['photos'] +
+                    datas['maps']['contributions']['videos']
+                )
+                print(
+                    f"\t\t{nbContrib} contributions including " +
+                    f"{reviews_ratings} reviews & ratings and {medias} medias"
+                )
+
+                count = 0
+                if datas['maps']['contributions']['photos'] or datas['maps']['contributions']['videos']:
+                    count = sum(
+                        len(c['medias']) 
+                        for c in datas['maps']['medias']['content']
+                    )
+                reviews_ratings = (
+                    len(datas['maps']['reviews'])
+                    if 'reviews' in datas['maps'] else 0
+                )
+                print(
+                    "\t\t\t" + " "*len(str(nbContrib)) +
+                    f"scrapped in fact {reviews_ratings} reviews & ratings " +
+                    f"and {count} medias"
+                )
+
+            else:
+                print(
+                    f"\t\t{datas['maps']['contributions']} contributions" +
+                    "/!\\ This data is sometimes wrong. " +
+                    "Configure Selenium to scrap more accurate informations /!\\"
+                )
+
+        else:
+            print(
+                "\n\tGoogle maps profile is private, " +
+                "can\'t scrap informations from it"
+            )
+
+    # YouTube informations
+    if "youtube" in datas:
+        print(
+            f"\tYouTube : User \"{datas['youtube']['username']}\" found " +
+            "/!\\ Maybe not the one you're looking for /!\\"
+        )
+        creation = datas['youtube']['creation']
+        creation_date = creation[:len(creation)-6].replace('T',' ')
+        print(
+            f"\t\tChannel \"{datas['youtube']['channel']}\" created {creation_date}"
+        )
+        print(f"\t\t{datas['youtube']['url']}")
+        print(
+            f"\t\t{sum(video['views'] for video in datas['youtube']['videos'])} " +
+            f"cumulative views on {len(datas['youtube']['videos'])} " +
+            "last posted video(s) found"
+        )
 
 def main(mails,output,browser):
 
-	# Try to connect to the Google People API and return a flag if a connection is established
-	apiFlag = False
-	try:
-		gpa.connect()
-		apiFlag = True
-		print(f'Connected to Google people API')
-	except:
-		print(f'Cannot connect to Google people API')
+    apiFlag = False
+    try:
+        gpa.connect()
+        apiFlag = True
+        print("Connected to Google people API")
+    except:
+        print("Cannot connect to Google people API")
+        print("Retry after deleting \"token.json\"")
 
-	# Import mails to the account's contact list if API is connected
-	if apiFlag: gpa.importContacts(mails)
+    datas = []
 
-	datas = []
-	# If API is enabled
-	if apiFlag:
-		while True:
-			# Download all the contacts
-			connections = gpa.downloadContacts()
-			connections = list(filter(lambda contact : "emailAddresses" in contact.keys() and contact['emailAddresses'][0]['value'] in mails, connections))
-			
-			# Iterate all the contacts downloaded
-			for person in connections:
-				data = {}
-				# Get the current mail of contact
-				mail = person['emailAddresses'][0]['value']
-				# If it's of one we're looking for, scrap informations
-				if mail in mails:
-					data['mail'] = mail
-					# If the contact is a GOOGLE USER
-					if len(person['metadata']['sources']) > 1:
-						data['userTypes'] = person['metadata']['sources'][1]['profileMetadata']['userTypes']
-						data['googleID'] = person['metadata']['sources'][1]['id']
-						data['profilePic'] = person['photos'][0]['url']
+    if apiFlag:
 
-						# Try to get maps infos
-						mpDatas = mapsData('https://www.google.com/maps/contrib/' + data['googleID'], browser)
-						if mpDatas: # If profile is public
-							data['maps'] = mpDatas
-							# Add te name found with maps to generals infos
-							data['name'] = data['maps']['name']
-							data['maps'].pop('name')
+        gpa.importContacts(mails)
+        while True:
 
-					# Try to find a YouTube channel
-					ytDatas = youtubeData(mail.split('@')[0])
-					if ytDatas:	data['youtube'] = ytDatas
+            connections = gpa.downloadContacts()
+            connections = list(filter(
+                lambda contact : "emailAddresses" in contact.keys() 
+                    and contact['emailAddresses'][0]['value'] in mails,
+                connections,
+            ))
+            
+            for person in connections:
+                data = {}
+                mail = person['emailAddresses'][0]['value']
 
-					# Print a console version of infos
-					printInformations(data)
+                if mail in mails:
+                    data['mail'] = mail
+                    if len(person['metadata']['sources']) > 1:
+                        sources = person['metadata']['sources'][1]
+                        data['userTypes']  = sources['profileMetadata']['userTypes']
+                        data['googleID']   = sources['id']
+                        data['profilePic'] = person['photos'][0]['url']
 
-					# Delete the contact from list
-					gpa.deleteContact(person['resourceName'])
-					mails.pop(mails.index(mail))
+                        mpDatas = mapsData(
+                            url=(
+                                "https://www.google.com/maps/contrib/" +
+                                data['googleID']
+                            ),
+                            browser=browser,
+                        )
+                        if mpDatas: # If profile is public
+                            data['maps'] = mpDatas
+                            data['name'] = data['maps']['name']
+                            data['maps'].pop("name")
 
-					# Add the data found to big dict
-					datas.append(data)
+                    ytDatas = youtubeData(mail.split("@")[0])
+                    if ytDatas: data['youtube'] = ytDatas
 
-			# Break if no more mails to verify
-			if len(mails) == 0:
-				break
+                    printInformations(data)
 
-			# Do it again if mails we were looking for were not downloaded
-			sleep(2)
+                    gpa.deleteContact(person['resourceName'])
+                    mails.pop(mails.index(mail))
 
-	# If API is not enabled
-	else:
-		# For each mail, try to find YouTube channel
-		for mail in mails:
-			print('\n' + mail + ' : ')
-			ytDatas = youtubeData(mail.split('@')[0])
-			datas.append(ytDatas)
+                    datas.append(data)
 
-	# Save all the informations in YouTube channel
-	with open((f'./{output}.json'),'w') as f:
-		json.dump(datas,f, indent=2)
+            if len(mails) == 0: break
+            sleep(2)
 
-if __name__ == '__main__':
-	
-	parser = argparse.ArgumentParser(description="OSINT tool allowing the exploration and the scrapping of a user's public data from a Google email address (gmail, googlemail) to find YouTube account, Google Maps Contributions and more.")
-	parser.add_argument('-e', '--email', help='target\'s mail')
-	parser.add_argument('-f', '--file', help='path to a file listing the email addresses of the targets')
-	parser.add_argument('-o', '--output', help='name of the output file (default is \"output\")', default="output")
-	parser.add_argument('-b', '--browser', help='select browser \"chrome\" or \"firefox\" (default is \"firefox\")', default="firefox")
-	args = parser.parse_args()
+    else:
+        for mail in mails:
+            ytDatas = youtubeData(mail.split("@")[0])
+            data = {"mail" : mail}
+            if ytDatas :
+                data["youtube"] = ytDatas
+            printInformations(data)
+            datas.append(ytDatas)
 
-	mails = []
+    with open((f"./{output}.json"),"w") as f:
+        json.dump(datas,f, indent=2)
 
-	if args.email != None:
-		mails.append(args.email)
-	if args.file != None:
-		mails.extend(open(args.file).read().splitlines())
+if __name__ == "__main__":
+    
+    parser = argparse.ArgumentParser(
+        description="Explore and scrap user\'s public data from Google account"
+    )
+    parser.add_argument(
+        "-e",
+        # metavar="EMAIL",
+        dest="email",
+        type=str,
+        nargs="?",
+        default=None,
+        help="target\'s mail"
+    )
+    parser.add_argument(
+        "-f",
+        dest="file",
+        type=str,
+        nargs="?",
+        default=None,
+        help="path to a file listing the email addresses of the targets"
+    )
+    parser.add_argument(
+        "-o",
+        dest="output",
+        type=str,
+        nargs="?",
+        default="output",
+        help="choose output name (default is \"output\")",
+    )
+    parser.add_argument(
+        "-b",
+        dest="browser",
+        choices=["firefox","chrome"],
+        default="firefox",
+        help="select browser \"chrome\" or \"firefox\" (default is \"firefox\")",
+    )
+    args = parser.parse_args()
 
-	if not mails:
-		exit('Please specify target\'s mail\nmailfogle.py [-h] for more informations')
+    printBanner()
 
-	if args.browser.lower() not in ["firefox","chrome"]:
-		exit('Please choose a browser between \"Firefox\" and \"Chrome\"\nmailfogle.py [-h] for more informations')
-	else:
-		browser = args.browser.lower()
+    mails = []
 
-	main(mails,args.output,browser)
+    if args.email: mails.append(args.email)
+    if args.file:  mails.extend(open(args.file).read().splitlines())
+
+    if not mails:
+        exit(
+            "Please specify target\'s mail\n" +
+            "mailfogle.py [-h] for more informations"
+        )
+
+    if args.browser.lower() not in ['firefox','chrome']:
+        exit(
+            "Please choose a browser between \"Firefox\" and \"Chrome\"\n" + 
+            "mailfogle.py [-h] for more informations"
+        )
+    else: browser = args.browser.lower()
+
+    main(mails=mails,output=args.output,browser=browser)
