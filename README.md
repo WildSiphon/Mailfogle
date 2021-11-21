@@ -43,16 +43,21 @@ If you're not sure, see `CONFIGURE_API.md` which explains how to do it step by s
 ### Usual use
 
 ```
-usage: mailfogle.py [-h] [-e [EMAIL]] [-f [FILE]] [-o [OUTPUT]] [-b {firefox,chrome}]
+usage: mailfogle.py [-h] [-e [EMAIL]] [-f [FILE]] [-o [OUTPUT]] [-b {firefox,chrome}] [--no-banner]
 
 Explore and scrap user's public data from Google account
 
 optional arguments:
-  -h, --help           show this help message and exit
-  -e [EMAIL]           target's mail
-  -f [FILE]            path to a file listing the email addresses of the targets
-  -o [OUTPUT]          choose output name (default is "output")
-  -b {firefox,chrome}  select browser "chrome" or "firefox" (default is "firefox")
+  -h, --help            show this help message and exit
+  -e [EMAIL], --email [EMAIL]
+                        target's mail
+  -f [FILE], --file [FILE]
+                        path to a file listing the email addresses of the targets
+  -o [OUTPUT], --output [OUTPUT]
+                        choose output name (default is 'output')
+  -b {firefox,chrome}, --browser {firefox,chrome}
+                        select browser "chrome" or "firefox" (default is "firefox")
+  --no-banner           doesn't display banner
 ```
 
 **Example**
@@ -214,8 +219,8 @@ List of informations about each video of the channel.
 + Add some infos to scrap from Google Maps profile (date of each media or medias from reviews)
 + Another way to find a person's Google ID without using the API (using the API is efficient but I'd rather not have to use it)
 + ~~Configure the script so that it can use Selenium with any geckodriver (not just Firefox)~~
-+ Make a class "GooglePeopleAPI" instead of functions in googlePeopleAPI.py
 + Find a way to scrap more than the last 15 videos of a YouTube channel
++ Add a contact cleaner when script is stopped during execution 
 
 ## References
 
