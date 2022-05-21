@@ -16,7 +16,7 @@ class GooglePeopleApi:
             self._connect()
             print("Connected to Google people API")
             self.connected = True
-            self._importContacts()
+            self._import_contacts()
         except:
             print("Cannot connect to Google people API")
             print("Retry after deleting 'token.json'")
@@ -46,14 +46,14 @@ class GooglePeopleApi:
         # Create service
         self.service = build("people", "v1", credentials=self.creds)
 
-    def _importContacts(self):
+    def _import_contacts(self):
         # Import the mail as a contact to the account
         for mail in self.mails:
             self.service.people().createContact(
                 body={"emailAddresses": [{"value": mail}]}
             ).execute()
 
-    def _downloadContacts(self):
+    def _download_contacts(self):
         results = (
             self.service.people()
             .connections()
@@ -66,16 +66,16 @@ class GooglePeopleApi:
         )
         return results.get("connections", [])
 
-    def _deleteContact(self, name):
+    def _delete_contact(self, name):
         # Sometimes the google API has trouble deleting the contact
         try:
             self.service.people().deleteContact(resourceName=name).execute()
         # Start again until it succeeds
         except:
-            self._deleteContact(name)
+            self._delete_contact(name)
 
     def get_data(self):
-        connections = self._downloadContacts()
+        connections = self._download_contacts()
         connections = list(
             filter(
                 lambda contact: "emailAddresses" in contact.keys()
@@ -102,7 +102,7 @@ class GooglePeopleApi:
                 user["google_ID"] = sources["id"]
                 user["profile_pic"] = person["photos"][0]["url"]
 
-            self._deleteContact(person["resourceName"])
+            self._delete_contact(person["resourceName"])
             self.mails.remove(user["mail"])
 
             users_data.append(user)

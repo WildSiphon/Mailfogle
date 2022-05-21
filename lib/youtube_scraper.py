@@ -13,9 +13,8 @@ class YoutubeScraper:
         self.channel = None
         self.creation = None
         self.videos = None
-        self._scrap_data()
 
-    def _scrap_data(self):
+    def scrap_data(self):
         # Making the request
         youtube_request = requests.get(self.url)
 

@@ -16,8 +16,15 @@ class User:
             google_ID=google_ID,
             browser=browser,
         )
+        # try:
+        self.data_maps.scrap_data()
+        # except Exception as e:
+        #     print(e)            
 
-        self.data_youtube = YoutubeScraper(self.username)
+        try:
+            self.data_youtube = YoutubeScraper(self.username)
+        except Exception as e:
+            print(e)
 
         self.print_informations()
 

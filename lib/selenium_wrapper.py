@@ -24,6 +24,7 @@ class SeleniumWrapper:
             return ""
         elif platform.startswith("win32"):
             return ".exe"
+        # TODO custom exception
         raise Exception(
             "Mailfogle with selenium is not supported for this OS. "
             'Only "linux" and "windows" are possible\n' + ERROR_MSG_BASE
@@ -46,6 +47,7 @@ class SeleniumWrapper:
 
         driver_path = f"./drivers/{driver_filename}"
         if not Path(driver_path).is_file():
+            # TODO custom exception
             raise Exception(msg.format(browser=self.browser))
 
 
