@@ -2,5 +2,5 @@
 emails.txt
 geckodriver.log
 lib/__pycache__/
-venv
+venv*
 *test*

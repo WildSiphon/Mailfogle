@@ -1,4 +1,4 @@
-beautifulsoup4==4.9.3
-google-api-python-client==2.6.0
-google-auth-oauthlib==0.4.4
-selenium==3.141.0
+beautifulsoup4>=4.9.3
+google-api-python-client>=2.6.0
+google-auth-oauthlib>=0.4.4
+selenium>=3.141.0
